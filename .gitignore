@@ -1,0 +1,10 @@
+# junk
+.DS_Store
+/.idea/
+/.vagrant/
+
+# ansible roles
+/ansible/roles/
+
+# personal files
+/ansible/vars.local.yml

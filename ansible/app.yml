@@ -1,0 +1,21 @@
+---
+
+- hosts: local
+  become: yes
+  become_user: root
+  roles:
+    - common-packages
+    - etc-hosts
+    - ssh-forward
+    - oh-my-zsh
+    - nginx
+    - php
+    - composer
+    - postgresql
+    - rabbitmq-management
+    - sass
+    - nodejs
+    - logstash
+  vars_files:
+    - vars.yml
+    - vars.local.yml

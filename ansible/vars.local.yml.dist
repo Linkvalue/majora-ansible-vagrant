@@ -1,0 +1,6 @@
+---
+
+zsh_theme: 'robbyrussell'
+zsh_editor: 'vim'
+
+composer_github_token: ''
