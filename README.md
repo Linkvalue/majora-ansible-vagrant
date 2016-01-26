@@ -2,7 +2,7 @@
 
 Vagrant implementation of [LinkValue/majora-ansible-playbook](https://github.com/LinkValue/majora-ansible-playbook).
 
-This Vagrant boilerplate also shows how to add other roles in `requirements.yml` in order to fulfill majora-ansible-playbook dependencies (such as `ruby`).
+This Vagrant boilerplate also shows how to add other roles in `ansible/galaxy-additionals.yml` in order to fulfill majora-ansible-playbook dependencies (such as `ruby`).
 
 
 

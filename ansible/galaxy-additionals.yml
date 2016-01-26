@@ -1,0 +1,13 @@
+#########################################################
+#                                                       #
+# Ansible Galaxy requirements file for non-Majora roles #
+#                                                       #
+# Theses roles will be installed in "roles" folder.     #
+#                                                       #
+#########################################################
+
+- src: rvm_io.rvm1-ruby
+  name: ruby
+
+- src: DavidWittman.redis
+  name: redis

@@ -16,7 +16,8 @@ rebuild: vm-rebuild
 #
 vm-download:
 	test -f ansible/vars.local.yml || cp ansible/vars.local.yml.dist ansible/vars.local.yml
-	ansible-galaxy install --force --role-file=requirements.yml
+	ansible-galaxy install --force -p ansible --role-file=ansible/galaxy-majora.yml
+	ansible-galaxy install --force -p ansible/roles --role-file=ansible/galaxy-additionals.yml
 
 vm-ssh:
 	vagrant ssh
