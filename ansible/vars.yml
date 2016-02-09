@@ -5,7 +5,7 @@ workspace: /var/www/AcmeProject
 timezone: Europe/Paris
 
 sites:
-  - { name: 'acme-project', docroot: '/var/www/AcmeProject', server_name: 'acme-project.dev', template: 'vhost.symfony2.j2' }
+  - { name: 'acme-project', docroot: '/var/www/AcmeProject', server_name: 'acme-project.dev', template: 'vhost.symfony.j2' }
 
 postgresql:
   databases:
