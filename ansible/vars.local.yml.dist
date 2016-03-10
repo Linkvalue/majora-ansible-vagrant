@@ -4,3 +4,11 @@ zsh_theme: 'steeef'
 zsh_editor: 'vim'
 
 composer_github_token: ''
+
+# Ssh folder on host
+# windows : /Users/MyUser/.ssh
+# Used only in the vagrant file to copy ssh folder on guest and run ansible_local
+ssh_host_folder: ~/.ssh
+# Folder on vm to store the ssh key
+# Needed by the ssh-forward role
+ssh_folder: /tmp/ssh-forward

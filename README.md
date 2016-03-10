@@ -4,7 +4,8 @@ Vagrant implementation of [LinkValue/majora-ansible-playbook](https://github.com
 
 This Vagrant boilerplate also shows how to add other roles in `ansible/galaxy-additionals.yml` in order to fulfill majora-ansible-playbook dependencies (such as `ruby`).
 
-
+ * You need to patch vagrant before using this, (with vagrant < 1.8.2) : https://github.com/mitchellh/vagrant/commit/9dbdb9397a92d4fc489e9afcb022621df7f60d11
+ * Vagrant destroy command works only if vagrant is not  running. Use vagrant suspend before destroying.
 
 ## Requirements
 
@@ -24,7 +25,12 @@ This Vagrant boilerplate also shows how to add other roles in `ansible/galaxy-ad
 * Ansible: http://docs.ansible.com/ansible/intro_installation.html#latest-releases-via-apt-ubuntu
 * NFS: `sudo apt-get install nfs-common nfs-kernel-server`
 
-
+### Windows
+* VirtualBox: https://www.virtualbox.org/wiki/Downloads
+* VirtualBox Extension Pack: https://www.virtualbox.org/wiki/Downloads
+* Vagrant: http://www.vagrantup.com/downloads
+* NFS : install vagrant plugin : https://github.com/winnfsd/vagrant-winnfsd
+* Change the ssh folder in vars.local.yml
 
 ## Usage
 
