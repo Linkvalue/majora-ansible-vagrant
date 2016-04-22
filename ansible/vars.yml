@@ -1,40 +1,56 @@
 ---
 
-workspace: /var/www/AcmeProject
+workspace: /var/www/share
 
 timezone: Europe/Paris
 
 sites:
-  - { name: 'acme-project', docroot: '/var/www/AcmeProject', server_name: 'acme-project.dev', template: 'vhost.symfony.j2' }
+  - name: 'marketplace'
+    template: vhost.symfony.j2
+    docroot: '/var/www/share/marketplace/web'
+    server_name: 'local.mp'
+    server_alias: "fr.local.mp be.local.mp ch.local.mp"
+    extra_parameters: |
+      Alias /uploads/media-tmp "/var/www/share/marketplace/files"
+      <Directory "/var/www/marketplace/files">
+          AllowOverride All
+          Allow from All
+      </Directory>
 
-postgresql:
-  databases:
-    - { name: 'acme-project' }
-  users:
-    - { name: 'acme-project' }
+      Alias /docs "/var/www/share/marketplace/web/docs"
+      <Directory "/var/www/share/marketplace/web/docs">
+          AllowOverride All
+          Allow from All
+      </Directory>
 
-rabbitmq:
-  users:
-    - { name: 'admin' }
+share:
+    - { 'src': '../share', 'target': '/var/www/share', 'type': 'nfs', 'mount_options': "nolock,vers=3,udp,noatime,actimeo=1" }
 
-php_version: '5.6'
+image:
+    base_box_name: "box-cutter/centos67" # "ubuntu/wily64"
 
-etc_hosts_lines:
-  - { ip: '192.168.100.12', hostname: 'my-other-vm-contains-redis-and-elasticsearch' }
-  - { ip: '192.168.100.12', hostname: 'microservice-hosted-elsewhere.dev' }
+project: "marketplace"
 
-logstash_config: >
-  input {
-  	redis {
-  	  data_type => list
-  	  host => my-other-vm-contains-redis-and-elasticsearch
-  	  key => a_random_key
-  	}
-  }
-  output {
-    elasticsearch {
-      index => my_index
-      document_type => my_type
-      hosts => ["my-other-vm-contains-redis-and-elasticsearch:9200"]
-    }
-  }
+private_network_ip: "192.168.0.200"
+
+forwarded_ports:
+    - { 'guest': '80', 'host': '8080' }
+    - { 'guest': '443', 'host': '8081' }
+    - { 'guest': '3306', 'host': '3307' }
+
+system:
+    gui: false
+    # cpu quantity for the vagrant
+    cpus: 2
+    # max cpu pourcentage for the vagrant
+    cpuexecutioncap: 50
+    # max memory for the vagrant
+    memory: 2048
+
+php:
+    version: 7
+
+puppet:
+    version: "latest"
+
+apache_remove_default_vhost: true

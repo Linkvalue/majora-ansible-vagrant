@@ -7,5 +7,5 @@
 #                                                       #
 #########################################################
 
-- src: https://github.com/LinkValue/majora-ansible-playbook
+- src: https://github.com/LinkValue/majora-ansible-playbook.git
   name: roles

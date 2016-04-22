@@ -5,17 +5,14 @@
   become_user: root
   roles:
     - common-packages
-    - etc-hosts
-    - ssh-forward
-    - oh-my-zsh
-    - nginx
-    - php
-    - composer
-    - postgresql
-    - rabbitmq-management
-    - sass
-    - nodejs
-    - logstash
+    # - oh-my-zsh
+    # - apache
+    - mysql
+    # - php
+    # - composer
+    # - mongodb
+    # - nodejs
+
   vars_files:
     - vars.yml
     - vars.local.yml

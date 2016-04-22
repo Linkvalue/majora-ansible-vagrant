@@ -1,0 +1,38 @@
+---
+
+workspace: /var/www/scrummy
+
+timezone: Europe/Paris
+
+sites:
+  - { name: 'acme-project', docroot: '/var/www/scrummy/web', server_name: 'acme-project.dev', template: 'vhost.symfony.j2' }
+
+share:
+    - { 'src': '../ecopsosf', 'target': '/var/www/ecopso', 'type': 'nfs', 'mount_options': "nolock,vers=3,udp,noatime,actimeo=1" }
+
+image:
+    base_box_name: "centos/7" # "ubuntu/wily64"
+
+project: "marketplace"
+
+private_network_ip: "192.168.0.200"
+
+forwarded_ports:
+    - { 'guest': '80', 'host': '8080' }
+    - { 'guest': '443', 'host': '8081' }
+    - { 'guest': '3306', 'host': '3307' }
+
+system:
+    gui: false
+    # cpu quantity for the vagrant
+    cpus: 2
+    # max cpu pourcentage for the vagrant
+    cpuexecutioncap: 50
+    # max memory for the vagrant
+    memory: 2048
+
+php:
+    version: 7
+
+puppet:
+    version: "latest"
