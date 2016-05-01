@@ -7,34 +7,39 @@ timezone: Europe/Paris
 sites:
   - { name: 'acme-project', docroot: '/var/www/AcmeProject', server_name: 'acme-project.dev', template: 'vhost.symfony.j2' }
 
-postgresql:
-  databases:
-    - { name: 'acme-project' }
+mysql:
   users:
+    - { name: 'root', password: '' }
+    - { name: 'acme-project' }
+
+postgresql:
+  users:
+    - { name: 'acme-project' }
+  databases:
     - { name: 'acme-project' }
 
 rabbitmq:
   users:
     - { name: 'admin' }
 
-php_version: '5.6'
+php_versions: ['7.0', '5.6'] # main php version will be 7.0 because it's the first value
 
 etc_hosts_lines:
-  - { ip: '192.168.100.12', hostname: 'my-other-vm-contains-redis-and-elasticsearch' }
-  - { ip: '192.168.100.12', hostname: 'microservice-hosted-elsewhere.dev' }
+  - { ip: '192.168.100.12', hostname: 'other-vm-containing-redis-and-elasticsearch' }
+  - { ip: '192.168.100.14', hostname: 'microservice-hosted-elsewhere.dev' }
 
 logstash_config: >
   input {
-  	redis {
-  	  data_type => list
-  	  host => my-other-vm-contains-redis-and-elasticsearch
-  	  key => a_random_key
-  	}
+    redis {
+      data_type => list
+      host => other-vm-containing-redis-and-elasticsearch
+      key => a_random_key
+    }
   }
   output {
     elasticsearch {
       index => my_index
       document_type => my_type
-      hosts => ["my-other-vm-contains-redis-and-elasticsearch:9200"]
+      hosts => ["other-vm-containing-redis-and-elasticsearch:9200"]
     }
   }

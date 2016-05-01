@@ -32,10 +32,10 @@ This Vagrant boilerplate also shows how to add other roles in `ansible/galaxy-ad
 
 Download this repository (git clone or download zip tarball), then open and edit the following files the way you need:
 
-  - `Vagrantfile` => virtual machine main configurations (ubuntu version, memory/cpu usages, hostname, IP and shared folder)
+  - `Vagrantfile` => virtual machine main configurations (memory/cpu usages, hostname, IP address and shared folder)
   - `app.yml` => every roles (mysql, redis, php, nginx, etc.)
   - `vars.yml` => every roles variables (versions, configurations, etc.)
-  - `vars.local.yml` => every personal roles variables (composer github token, oh-my-zsh theme, etc.)
+  - `vars.local.yml` => every personal roles variables (php memory_limit, composer github token, oh-my-zsh theme, etc.)
 
 ### 2. Download Ansible roles
 
