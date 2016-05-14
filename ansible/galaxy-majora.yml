@@ -9,4 +9,4 @@
 
 - src: https://github.com/LinkValue/majora-ansible-playbook
   name: roles
-  version: v1.0.0
+  version: v1.2.0
