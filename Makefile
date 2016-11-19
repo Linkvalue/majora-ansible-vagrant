@@ -1,9 +1,8 @@
-.PHONY: download provision start stop ssh destroy rebuild
+.PHONY: provision start stop ssh destroy rebuild
 
 #
 # Main targets
 #
-download: vm-download
 provision: vm-provision
 start: vm-up
 stop: vm-halt
@@ -14,11 +13,6 @@ rebuild: vm-rebuild
 #
 # VM
 #
-vm-download:
-	test -f ansible/vars.local.yml || cp ansible/vars.local.yml.dist ansible/vars.local.yml
-	ansible-galaxy install --force -p ansible --role-file=ansible/galaxy-majora.yml
-	ansible-galaxy install --force -p ansible/roles --role-file=ansible/galaxy-additionals.yml
-
 vm-ssh:
 	vagrant ssh
 

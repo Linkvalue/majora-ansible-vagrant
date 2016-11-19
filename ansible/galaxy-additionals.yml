@@ -6,8 +6,10 @@
 #                                                       #
 #########################################################
 
-- src: rvm_io.rvm1-ruby
-  name: ruby
+- name: ruby
+  src: https://github.com/rvm/rvm1-ansible
+  version: v1.3.8
 
-- src: DavidWittman.redis
-  name: redis
+- name: redis
+  src: https://github.com/DavidWittman/ansible-redis
+  version: 1.2.0

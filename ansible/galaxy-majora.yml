@@ -2,11 +2,13 @@
 #                                                       #
 # Ansible Galaxy requirements file for Majora roles     #
 #                                                       #
-# You probably don't need to edit this file,            #
-# please edit "galaxy-additionals.yml" instead.         #
+# The "version" is the only thing you should edit here. #
+#                                                       #
+# If you want to add roles,                             #
+# you must edit "galaxy-additionals.yml" instead.       #
 #                                                       #
 #########################################################
 
 - src: https://github.com/LinkValue/majora-ansible-playbook
   name: roles
-  version: v1.4.0
+  version: v2.0.0
