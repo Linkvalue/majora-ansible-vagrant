@@ -1,7 +1,5 @@
 ---
 
-php_memory_limit: '2G'
-
 zsh_theme: 'steeef'
 zsh_editor: 'vim'
 
