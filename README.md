@@ -2,7 +2,7 @@
 
 Vagrant implementation of [LinkValue/majora-ansible-playbook](https://github.com/LinkValue/majora-ansible-playbook).
 
-This Vagrant boilerplate also shows how to add other roles in `ansible/galaxy-additionals.yml` in order to fulfill majora-ansible-playbook dependencies (such as `ruby`).
+This Vagrant boilerplate also shows how to add other Ansible roles in `ansible/galaxy-additionals.yml` in order to fulfill majora-ansible-playbook dependencies (such as `ruby`).
 
 
 
@@ -38,14 +38,15 @@ This Vagrant boilerplate also shows how to add other roles in `ansible/galaxy-ad
 
 ## Usage
 
-### 1. Configure the VM according to the applications it will run
+### 1. Configure the VM according to the applications it will host
 
-Download this repository (git clone or download zip tarball), then open and edit the following files the way you need:
+Download this repository (download zip or `git clone`), then open and edit the following files the way you need:
 
-  - `app.yml` => every roles (mysql, php, nginx, oh-my-zsh, redis, nodejs, etc.)
-  - `vars.yml` => every roles variables (mysql users, php versions, nginx virtual hosts, shell aliases, etc.)
-  - `vars.local.yml.dist` => default values for every personal roles variables (php memory_limit, composer github token, oh-my-zsh theme, etc.)
-  - `vagrant-parameters.yml.dist` => default values for every personal Vagrant related parameters (RAM and CPU usage, hosts to bind with VM IP, etc.)
+  - `ansible/vagrant-parameters.yml` => main Vagrant parameters that shouldn't be changed by other users (sharing strategy, hosts to bind with VM IP, etc.)
+  - `ansible/vagrant-parameters.local.yml.dist` => default values for personal Vagrant parameters (RAM and CPU usage, VM IP, forwarded files, etc.)
+  - `ansible/app.yml` => every Ansible roles (common-packages, oh-my-zsh, mysql, php, nginx, redis, nodejs, etc.)
+  - `ansible/vars.yml` => every Ansible roles variables (mysql users, php versions, nginx virtual hosts, shell aliases, etc.)
+  - `ansible/vars.local.yml.dist` => default values for every personal roles variables (php memory_limit, composer github token, oh-my-zsh theme, etc.)
 
 Note: "*.dist" files are only templates to hold default values (i.e. what you think is good enough for everyone). Each of these will be duplicated as a "gitignored file" to let everyone apply their own customization.
 
@@ -89,6 +90,42 @@ make destroy
 
 
 
+## Sharing strategies
+
+majora-ansible-vagrant offers 2 different ways of sharing your projects sources with the VM using NFS.
+
+The strategy to use should be defined in the `ansible/vagrant-parameters.yml` file.
+
+### `self` strategy (default sharing strategy)
+
+If you want to host a single project in your VM and you want to commit it in this project (e.g. to share your development environment with others), the `sharing_strategy: 'self'` is exactly what you want.
+
+This will share this project root directory, so you'll just have to add the `ansible` directory, the `Vagrantfile`, the `Makefile` and the `.gitignore` file content in your own project root directory.
+
+By default, it mounts your root directory in `/var/www/majora-ansible-vagrant` on the VM side, so don't forget to edit the `vagrant-parameters.yml` file to change the `sharing_self_absolute_path_in_vm` value in order to mount your project sources in a more appropriate location.
+
+Behind the scene, this is what will be included in the `Vagrantfile` (by default):
+
+```
+vm.synced_folder '.', '/var/www/majora-ansible-vagrant' ...
+```
+
+### `subdirectory` strategy
+
+If you want to host several projects in a single VM (e.g. to leverage the memory/CPU/disk cost of running multiple VMs or to ease the communication between these projects) or if you just don't want to include your development environment in your projects, the `sharing_strategy: 'subdirectory'` is exactly what you want.
+
+This will share a single subdirectory (usually named `www` because usually mounted as `/var/www` on the VM side) where you'll put all your projects sources.
+
+Don't forget to edit the `.gitignore` file to ignore the `www` folder as you probably don't want to commit it along your VM.
+
+Behind the scene, this is what will be included in your `Vagrantfile` (by default):
+
+```
+vm.synced_folder 'www', '/var/www' ...
+```
+
+
+
 ## Configuration recipes
 
 ### Multiple PHP projects
@@ -103,7 +140,7 @@ And we want these PHP projects to be respectively accessible at `sf-api.dev`, `z
 
 Here's the configuration you may use to run such a VM:
 
-#### vagrant-parameters.yml.dist
+#### vagrant-parameters.yml
 
 ```yaml
 # ...
@@ -159,7 +196,65 @@ etc_hosts_lines:
   - { ip: '127.0.0.1', hostname: 'sf-api.dev zend-api.dev' } # because "php56-site" project will send HTTP requests to the 2 other projects
 ```
 
-### Python project
+### Single PHP/MySQL project
+
+#### vagrant-parameters.yml
+
+```yaml
+# ...
+
+sharing_strategy: 'self'
+
+sharing_self_absolute_path_in_vm: '/var/www/my-symfony-project'
+
+# ...
+```
+
+#### app.yml
+
+```yaml
+# ...
+
+  roles:
+    - common-packages
+    - oh-my-zsh
+    - nginx
+    - php
+    - composer
+    - mysql
+
+# ...
+```
+
+#### vars.yml
+
+```yaml
+php_versions: ['7.0']
+
+sites:
+  - { name: 'my-symfony-project', server_name: 'symfony.dev', template: 'vhost.symfony.j2' }
+
+zsh_additional_commands: |
+  alias sf='php bin/console'
+
+mysql:
+  users:
+    - { name: 'root', password: '' }
+```
+
+### Single Python project
+
+#### vagrant-parameters.yml
+
+```yaml
+# ...
+
+sharing_strategy: 'self'
+
+sharing_self_absolute_path_in_vm: '/var/www/my-python-project'
+
+# ...
+```
 
 #### app.yml
 

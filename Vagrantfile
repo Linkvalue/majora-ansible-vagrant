@@ -65,20 +65,41 @@ Dir.glob('ansible/*.dist') do |dist_file|
     end
 end
 
-# Merge "ansible/vagrant-parameters.yml" with default parameters values
+# Merge "ansible/vagrant-parameters.local.yml" with "ansible/vagrant-parameters.yml" with default parameters values
+file_local_parameters = YAML.load_file('ansible/vagrant-parameters.local.yml') || {}
 file_parameters = YAML.load_file('ansible/vagrant-parameters.yml') || {}
 parameters = {
-    'vm_memory' => file_parameters['vm_memory'].instance_of?(Integer) ? file_parameters['vm_memory'] : 2048,
-    'vm_cpus' => file_parameters['vm_cpus'].instance_of?(Integer) ? file_parameters['vm_cpus'] : 2,
-    'vm_ip' => file_parameters['vm_ip'].instance_of?(String) ? file_parameters['vm_ip'] : '192.168.100.10',
-    'vm_ip_aliases' => file_parameters['vm_ip_aliases'].instance_of?(Array) ? file_parameters['vm_ip_aliases'] : [],
-    'vm_hostname' => file_parameters['vm_hostname'].instance_of?(String) ? file_parameters['vm_hostname'] : 'majora-ansible-vagrant',
-    'sharing_strategy' => ['self', 'subdirectory'].include?(file_parameters['sharing_strategy']) ? file_parameters['sharing_strategy'] : 'self',
-    'sharing_self_absolute_path_in_vm' => file_parameters['sharing_self_absolute_path_in_vm'].instance_of?(String) ? file_parameters['sharing_self_absolute_path_in_vm'] : '/var/www/majora-ansible-vagrant',
-    'sharing_subdirectory_relative_path' => file_parameters['sharing_subdirectory_relative_path'].instance_of?(String) ? file_parameters['sharing_subdirectory_relative_path'] : 'www',
-    'sharing_subdirectory_absolute_path_in_vm' => file_parameters['sharing_subdirectory_absolute_path_in_vm'].instance_of?(String) ? file_parameters['sharing_subdirectory_absolute_path_in_vm'] : '/var/www',
-    'forwarded_files' => get_forwarded_files_from_parameters(file_parameters['forwarded_files_from_home']),
-    'install_ansible_roles' => [true, false].include?(file_parameters['install_ansible_roles']) ? file_parameters['install_ansible_roles'] : true,
+    'vm_memory' => file_local_parameters['vm_memory'].instance_of?(Integer) ? file_local_parameters['vm_memory']
+        : file_parameters['vm_memory'].instance_of?(Integer) ? file_parameters['vm_memory']
+        : 2048,
+    'vm_cpus' => file_local_parameters['vm_cpus'].instance_of?(Integer) ? file_local_parameters['vm_cpus']
+        : file_parameters['vm_cpus'].instance_of?(Integer) ? file_parameters['vm_cpus']
+        : 2,
+    'vm_ip' => file_local_parameters['vm_ip'].instance_of?(String) ? file_local_parameters['vm_ip']
+        : file_parameters['vm_ip'].instance_of?(String) ? file_parameters['vm_ip']
+        : '192.168.100.1',
+    'vm_ip_aliases' => file_local_parameters['vm_ip_aliases'].instance_of?(Array) ? file_local_parameters['vm_ip_aliases']
+        : file_parameters['vm_ip_aliases'].instance_of?(Array) ? file_parameters['vm_ip_aliases']
+        : [],
+    'vm_hostname' => file_local_parameters['vm_hostname'].instance_of?(String) ? file_local_parameters['vm_hostname']
+        : file_parameters['vm_hostname'].instance_of?(String) ? file_parameters['vm_hostname']
+        : 'majora-ansible-vagrant',
+    'sharing_strategy' => ['self', 'subdirectory'].include?(file_local_parameters['sharing_strategy']) ? file_local_parameters['sharing_strategy']
+        : ['self', 'subdirectory'].include?(file_parameters['sharing_strategy']) ? file_parameters['sharing_strategy']
+        : 'self',
+    'sharing_self_absolute_path_in_vm' => file_local_parameters['sharing_self_absolute_path_in_vm'].instance_of?(String) ? file_local_parameters['sharing_self_absolute_path_in_vm']
+        : file_parameters['sharing_self_absolute_path_in_vm'].instance_of?(String) ? file_parameters['sharing_self_absolute_path_in_vm']
+        : '/var/www/majora-ansible-vagrant',
+    'sharing_subdirectory_relative_path' => file_local_parameters['sharing_subdirectory_relative_path'].instance_of?(String) ? file_local_parameters['sharing_subdirectory_relative_path']
+        : file_parameters['sharing_subdirectory_relative_path'].instance_of?(String) ? file_parameters['sharing_subdirectory_relative_path']
+        : 'www',
+    'sharing_subdirectory_absolute_path_in_vm' => file_local_parameters['sharing_subdirectory_absolute_path_in_vm'].instance_of?(String) ? file_local_parameters['sharing_subdirectory_absolute_path_in_vm']
+        : file_parameters['sharing_subdirectory_absolute_path_in_vm'].instance_of?(String) ? file_parameters['sharing_subdirectory_absolute_path_in_vm']
+        : '/var/www',
+    'install_ansible_roles' => [true, false].include?(file_local_parameters['install_ansible_roles']) ? file_local_parameters['install_ansible_roles']
+        : [true, false].include?(file_parameters['install_ansible_roles']) ? file_parameters['install_ansible_roles']
+        : true,
+    'forwarded_files' => get_forwarded_files_from_parameters(file_local_parameters['forwarded_files_from_home'].instance_of?(Array) ? file_local_parameters['forwarded_files_from_home'] : file_parameters['forwarded_files_from_home']),
 }
 
 # VMs configuration

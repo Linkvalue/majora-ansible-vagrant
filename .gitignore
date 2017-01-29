@@ -7,7 +7,7 @@
 /.vagrant/
 /ansible/roles/
 /ansible/vars.local.yml
-/ansible/vagrant-parameters.yml
+/ansible/vagrant-parameters.local.yml
 /ansible/*.retry
 
 # if you set sharing_strategy = 'subdirectory', you'll probably want to gitignore the shared subdirectory:

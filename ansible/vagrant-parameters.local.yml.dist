@@ -1,0 +1,15 @@
+---
+
+# VM RAM usage (in MB)
+vm_memory: 2048
+
+# VM CPUs usage
+vm_cpus: 2
+
+# VM IP address
+vm_ip: '192.168.100.1'
+
+# Relative paths from your user home directory to a file (or a directory) which you want to be available in the user home directory of the VM
+# Note: the forwarded files are not synchronized => files are only copied from host to guest at provisioning
+# Note2: the forwarded files permissions are set to "700" which is low enough for "private keys" forwarding
+forwarded_files_from_home: ['.ssh/id_rsa']
