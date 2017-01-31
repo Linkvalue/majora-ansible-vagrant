@@ -69,23 +69,26 @@ make ssh
 ## Makefile reminder
 
 ```bash
+# Show Makefile documentation
+make help
+
+# Provision virtual machine
+make provision
+
+# SSH to virtual machine
+make ssh
+
 # Start virtual machine
 make start
 
 # Stop virtual machine (free memory/cpu usages)
 make stop
 
-# SSH to virtual machine
-make ssh
-
-# Provision virtual machine
-make provision
+# Destroy (free disk space)
+make destroy
 
 # Rebuild virtual machine
 make rebuild
-
-# Destroy (free disk space)
-make destroy
 ```
 
 
